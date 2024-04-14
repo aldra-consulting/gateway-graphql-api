@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app.Dockerfile
+    read_only: true
+    ports:
+      - 8007:8000
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=8000
+      - INTROSPECTION=true
+      - PLAYGROUND=true
+      - MISSION_GRAPHQL_API_URL=http://mission-graphql-api:8000
+      - NPM_CONFIG_UPDATE_NOTIFIER=false
+    networks:
+      aldra:
+        aliases:
+          - gateway-graphql-api
+  sidecar:
+    build:
+      context: .
+      dockerfile: ./docker/sidecar.Dockerfile
+    ports:
+      - 8008:8001
+    networks:
+      aldra:
+        aliases:
+          - gateway-graphql-api-sidecar
+networks:
+  aldra:
+    name: aldra
