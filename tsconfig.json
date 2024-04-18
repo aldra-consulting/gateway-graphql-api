@@ -19,12 +19,6 @@
       ]
     }
   },
-  "include": [
-    "src"
-  ],
-  "files": [
-    "jest.config.ts"
-  ],
   "exclude": [
     "lib",
     "node_modules"
