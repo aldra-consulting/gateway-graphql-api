@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/aldra-consulting/gateway-graphql-api/compare/1.0.2...1.1.0) (2024-04-18)
+
+
+### Features
+
+* use embedded server ([f2ebed9](https://github.com/aldra-consulting/gateway-graphql-api/commit/f2ebed9f72dbc2f4fda89825c3b7cf2f33612d5f))
+
 ## [1.0.2](https://github.com/aldra-consulting/gateway-graphql-api/compare/1.0.1...1.0.2) (2024-04-18)
 
 
