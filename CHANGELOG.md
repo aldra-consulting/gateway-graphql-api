@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/aldra-consulting/gateway-graphql-api/compare/1.1.0...1.1.1) (2024-04-18)
+
+
+### Bug Fixes
+
+* register endpoints in correct order ([24d332e](https://github.com/aldra-consulting/gateway-graphql-api/commit/24d332e00dd37a2e61ad7add2bc3a9068dcbd6e4))
+
 # [1.1.0](https://github.com/aldra-consulting/gateway-graphql-api/compare/1.0.2...1.1.0) (2024-04-18)
 
 
