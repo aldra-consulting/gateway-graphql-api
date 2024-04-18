@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/aldra-consulting/gateway-graphql-api/compare/1.1.1...1.1.2) (2024-04-18)
+
+
+### Bug Fixes
+
+* do not use enum from '@apollo/gateway' package ([bcaf78c](https://github.com/aldra-consulting/gateway-graphql-api/commit/bcaf78c629d4f6548569b63f15958ffafb3c7012))
+
 ## [1.1.1](https://github.com/aldra-consulting/gateway-graphql-api/compare/1.1.0...1.1.1) (2024-04-18)
 
 
