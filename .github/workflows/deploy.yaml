@@ -1,6 +1,9 @@
 name: Deploy
 
 on:
+  repository_dispatch:
+    types:
+      - subgraph_changed
   workflow_call:
     inputs:
       environment:
@@ -29,9 +32,10 @@ permissions:
   contents: read
 
 jobs:
-  run:
-    name: Run
+  deploy-to-ecr:
+    name: Deploy to Amazon ECR
     runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'subgraph_changed' }}
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v4
@@ -107,3 +111,30 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
+
+  deploy-ecs-service:
+    name: Deploy Amazon ECS service
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-to-ecr
+    if: ${{ always() && github.event.action == 'subgraph_changed' && (inputs.environment || github.event.client_payload.environment) && (needs.deploy-to-ecr.result == 'success' || needs.deploy-to-ecr.result == 'skipped') }}
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ inputs.region || github.event.client_payload.region || 'eu-west-1' }}
+          role-to-assume: ${{ vars.AWS_ROLE_FOR_GITHUB_ACTIONS }}
+
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }} --query taskDefinition > task-definition.json
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          cluster: ${{ vars.AWS_ECS_CLUSTER }}
+          service: ${{ github.event.repository.name }}
+          force-new-deployment: true
+          wait-for-service-stability: true
